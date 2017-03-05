@@ -43,10 +43,22 @@ apiCall = requests.get(emptyUrl + stockName)
 apiCall = str(apiCall.content)
 indexOfStatus = apiCall.find('\"Status\"')
 apiCall = apiCall[(indexOfStatus-2):]
-json.dumps(apiCall)
+
+print(apiCall)
 print("Firm: " + "")
 
 
-print(apiCall)
-#while(true):
-#	userInput = input()
+
+while(True):
+	print("Enter a ticket symbol for a firm:")
+	userInput = input()
+	stockName = userInput
+	stockName.upper()
+	apiCall = requests.get(emptyUrl + stockName)
+
+	apiCall = str(apiCall.content)
+	indexOfStatus = apiCall.find('\"Status\"')
+	apiCall = apiCall[(indexOfStatus-2):]
+
+	print(apiCall)
+	print("Firm: " + "")
