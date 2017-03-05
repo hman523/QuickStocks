@@ -36,17 +36,6 @@ print("  /$$$$$$            /$$           /$$                     \n" +
 
 
 	)
-stockName = "t"
-stockName.upper()
-apiCall = requests.get(emptyUrl + stockName)
-
-apiCall = str(apiCall.content)
-indexOfStatus = apiCall.find('\"Status\"')
-apiCall = apiCall[(indexOfStatus-2):]
-
-print(apiCall)
-print("Firm: " + "")
-
 
 
 while(True):
@@ -59,6 +48,11 @@ while(True):
 	apiCall = str(apiCall.content)
 	indexOfStatus = apiCall.find('\"Status\"')
 	apiCall = apiCall[(indexOfStatus-2):]
-
 	print(apiCall)
-	print("Firm: " + "")
+	
+
+	count = 0
+	stockMetadata = []
+	while(count < len(apiCall)):
+		count = count + 1
+	print("Firm- " + "")
