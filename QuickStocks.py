@@ -5,13 +5,15 @@
 
 #This code is provided AS IS and provides no warrenty
 
-
+#Imports the libraries requests for making the GET request and 
+#JSON for parsing the request
 import requests
 import json
 
+#This is the API URL that is used
 emptyUrl = "http://dev.markitondemand.com/MODApis/Api/v2/Quote/jsonp?symbol="
 
-
+#A nice welcome screen to print
 print("  /$$$$$$            /$$           /$$                     \n" +
 	  " /$$__  $$          |__/          | $$                     \n" +
 	  "| $$  \ $$ /$$   /$$ /$$  /$$$$$$$| $$   /$$               \n" + 
@@ -37,22 +39,45 @@ print("  /$$$$$$            /$$           /$$                     \n" +
 
 	)
 
+#Informs user how to leave program
+print("To quit type quit or Control + \"c\"")
+
+#Main loop in the program
+#Asks the user for a stock symbol and searches info based on that
+
+
 
 while(True):
+	#Takes user input
 	print("Enter a ticket symbol for a firm:")
 	userInput = input()
 	stockName = userInput
 	stockName.upper()
+	
+	#Calls the API
 	apiCall = requests.get(emptyUrl + stockName)
-
+	
+	#Gets rid of some of the junk taht comes back
+	#TODO: make this a json file
 	apiCall = str(apiCall.content)
 	indexOfStatus = apiCall.find('\"Status\"')
 	apiCall = apiCall[(indexOfStatus-2):]
+	
+	#Prints the resulting call TODO: remove this later
 	print(apiCall)
 	
-
-	count = 0
-	stockMetadata = []
-	while(count < len(apiCall)):
-		count = count + 1
+	#Prints all metadata
 	print("Firm- " + "")
+	print("Symbol- " + "")
+	print("Last Price- " + "")
+	print("Change- " + "")
+	print("Percent Change- " + "")
+	print("Time- " + "")
+	print("Market Cap- " + "")
+	print("Volume- " + "")
+	print("High- " + "")
+	print("Low- " + "")
+	print("Open- " + "")
+	print("Year To Date Change- " + "")
+	print("Year To Date Percent Change- " + "")
+		
