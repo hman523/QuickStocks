@@ -51,6 +51,9 @@ while(True):
 	#Takes user input
 	print("Enter a ticket symbol for a firm:")
 	userInput = input()
+	if(userInput.lower() == 'quit'):
+		quit()
+
 	stockName = userInput
 	stockName.upper()
 	
