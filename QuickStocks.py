@@ -60,27 +60,27 @@ while(True):
 	#Calls the API
 	apiCall = requests.get(emptyUrl + stockName)
 	
-	#Gets rid of some of the junk taht comes back
-	#TODO: make this a json file
+	#Gets rid of some of the junk that comes back and makes it a json
+
 	apiCall = str(apiCall.content)
 	indexOfStatus = apiCall.find('\"Status\"')
-	apiCall = apiCall[(indexOfStatus-2):]
+	length = len(apiCall)
+	apiCall = apiCall[(indexOfStatus-1):length-2]
+	jsonOfCall = json.loads(apiCall)
 	
-	#Prints the resulting call TODO: remove this later
-	print(apiCall)
 	
 	#Prints all metadata
-	print("Firm- " + "")
-	print("Symbol- " + "")
-	print("Last Price- " + "")
-	print("Change- " + "")
-	print("Percent Change- " + "")
-	print("Time- " + "")
-	print("Market Cap- " + "")
-	print("Volume- " + "")
-	print("High- " + "")
-	print("Low- " + "")
-	print("Open- " + "")
-	print("Year To Date Change- " + "")
-	print("Year To Date Percent Change- " + "")
+	print("Firm- " + jsonOfCall['Name'])
+	print("Symbol- " + jsonOfCall['Symbol'])
+	print("Last Price- " + str(jsonOfCall['LastPrice']))
+	print("Change- " + str(jsonOfCall['Change']))
+	print("Percent Change- " + str(jsonOfCall['ChangePercent']) + "%")
+	print("Time- " + str(jsonOfCall['Timestamp']))
+	print("Market Cap- " + str(jsonOfCall['MarketCap']))
+	print("Volume- " + str(jsonOfCall['Volume']))
+	print("High- " + str(jsonOfCall['High']))
+	print("Low- " + str(jsonOfCall['Low']))
+	print("Open- " + str(jsonOfCall['Open']))
+	print("Year To Date Change- " + str(jsonOfCall['ChangeYTD']))
+	print("Year To Date Percent Change- " + str(jsonOfCall['ChangePercentYTD']) + "%")
 		
