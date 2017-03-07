@@ -42,9 +42,45 @@ print("  /$$$$$$            /$$           /$$                     \n" +
 #Informs user how to leave program
 print("To quit type quit or Control + \"c\"")
 
+def callApi(stockSymbol):
+	stockSymbol.upper()
+	apiCall = requests.get(emptyUrl + stockSymbol)
+	apiCall = str(apiCall.content)
+	indexOfStatus = apiCall.find('\"Status\"')
+	length = len(apiCall)
+	apiCall = apiCall[(indexOfStatus-1):length-2]
+	return apiCall
+
+def apiCallToJson(call):
+	if(len(call) > 0):
+		jsonOfCall = json.loads(call)
+		return jsonOfCall
+	else:
+		return None
+
+#prints all metadata from a given json
+def printAllInfo(jsonOfCall):
+	if(jsonOfCall is not None):
+		print("Firm- " + jsonOfCall['Name'])
+		print("Symbol- " + jsonOfCall['Symbol'])
+		print("Last Price- " + str(jsonOfCall['LastPrice']))
+		print("Change- " + str(jsonOfCall['Change']))
+		print("Percent Change- " + str(jsonOfCall['ChangePercent']) + "%")
+		print("Time- " + str(jsonOfCall['Timestamp']))
+		print("Market Cap- " + str(jsonOfCall['MarketCap']))
+		print("Volume- " + str(jsonOfCall['Volume']))
+		print("High- " + str(jsonOfCall['High']))
+		print("Low- " + str(jsonOfCall['Low']))
+		print("Open- " + str(jsonOfCall['Open']))
+		print("Year To Date Change- " + str(jsonOfCall['ChangeYTD']))
+		print("Year To Date Percent Change- " + str(jsonOfCall['ChangePercentYTD']) + "%")
+	else:
+		print("Error finding stock")
+		
+
+
 #Main loop in the program
 #Asks the user for a stock symbol and searches info based on that
-
 
 
 while(True):
@@ -54,33 +90,4 @@ while(True):
 	if(userInput.lower() == 'quit'):
 		quit()
 
-	stockName = userInput
-	stockName.upper()
-	
-	#Calls the API
-	apiCall = requests.get(emptyUrl + stockName)
-	
-	#Gets rid of some of the junk that comes back and makes it a json
-
-	apiCall = str(apiCall.content)
-	indexOfStatus = apiCall.find('\"Status\"')
-	length = len(apiCall)
-	apiCall = apiCall[(indexOfStatus-1):length-2]
-	jsonOfCall = json.loads(apiCall)
-	
-	
-	#Prints all metadata
-	print("Firm- " + jsonOfCall['Name'])
-	print("Symbol- " + jsonOfCall['Symbol'])
-	print("Last Price- " + str(jsonOfCall['LastPrice']))
-	print("Change- " + str(jsonOfCall['Change']))
-	print("Percent Change- " + str(jsonOfCall['ChangePercent']) + "%")
-	print("Time- " + str(jsonOfCall['Timestamp']))
-	print("Market Cap- " + str(jsonOfCall['MarketCap']))
-	print("Volume- " + str(jsonOfCall['Volume']))
-	print("High- " + str(jsonOfCall['High']))
-	print("Low- " + str(jsonOfCall['Low']))
-	print("Open- " + str(jsonOfCall['Open']))
-	print("Year To Date Change- " + str(jsonOfCall['ChangeYTD']))
-	print("Year To Date Percent Change- " + str(jsonOfCall['ChangePercentYTD']) + "%")
-		
+	printAllInfo(apiCallToJson(callApi(userInput)))
