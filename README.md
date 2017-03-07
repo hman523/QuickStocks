@@ -15,6 +15,6 @@ To quit the program, type quit, case insensitive.  You can also use CTRL + "c" t
 ##Future releases
 I plan to add the ability to add files to save stock names in a files so you can print multiple stocks at once.  Another feature I wish to add is the ability to use command line options to use quick results.
 
-##Hopes and dreams for this porject
+##Hopes and dreams for this project
 The goal of this is for me to work with Python, a language I have not loved so much in the past.  By forcing myself to do this, I actually have started to enjoy the succinct nature of the language.
 I also want for this program to be usable in bash scripts to link somethingusing stock data, ie. a CRON script that runs this api, checks its output and does an action if something happens.
