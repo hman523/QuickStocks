@@ -7,33 +7,39 @@
 
 #Imports the libraries requests for making the GET request and 
 #JSON for parsing the request
+#sys and argparse for command line options
 import requests
 import json
+import sys
+import argparse
 
 #This is the API URL that is used
 emptyUrl = "http://dev.markitondemand.com/MODApis/Api/v2/Quote/jsonp?symbol="
 
+
+
 #A nice welcome screen to print
-print("  /$$$$$$            /$$           /$$                     \n" +
-	  " /$$__  $$          |__/          | $$                     \n" +
-	  "| $$  \ $$ /$$   /$$ /$$  /$$$$$$$| $$   /$$               \n" + 
-	  "| $$  | $$| $$  | $$| $$ /$$_____/| $$  /$$/               \n" + 
-	  "| $$  | $$| $$  | $$| $$| $$      | $$$$$$/                \n" + 
-	  "| $$/$$ $$| $$  | $$| $$| $$      | $$_  $$                \n" + 
-	  "|  $$$$$$/|  $$$$$$/| $$|  $$$$$$$| $$ \  $$               \n" +
-	  " \____ $$$ \______/ |__/ \_______/|__/  \__/               \n" +
-	  "      \__/                                                 \n" +
-	  "                                                           \n" +
-	  "                                                           \n" +
-	  "  /$$$$$$   /$$                         /$$                \n" +
-	  " /$$__  $$ | $$                        | $$                \n" +
-	  "| $$  \__//$$$$$$    /$$$$$$   /$$$$$$$| $$   /$$  /$$$$$$$\n" +
-	  "|  $$$$$$|_  $$_/   /$$__  $$ /$$_____/| $$  /$$/ /$$_____/\n" +
-	  " \____  $$ | $$    | $$  \ $$| $$      | $$$$$$/ |  $$$$$$ \n" +
-	  " /$$  \ $$ | $$ /$$| $$  | $$| $$      | $$_  $$  \____  $$\n" +
-	  "|  $$$$$$/ |  $$$$/|  $$$$$$/|  $$$$$$$| $$ \  $$ /$$$$$$$/\n" +
-	  " \______/   \___/   \______/  \_______/|__/  \__/|_______/ \n" +
-	  "\n\nVersion: 1.0	Author: Hunter Barbella (AKA hman523)"
+def welcomePrint():
+	print("  /$$$$$$            /$$           /$$                     \n" +
+		  " /$$__  $$          |__/          | $$                     \n" +
+	  	  "| $$  \ $$ /$$   /$$ /$$  /$$$$$$$| $$   /$$               \n" + 
+	  	  "| $$  | $$| $$  | $$| $$ /$$_____/| $$  /$$/               \n" + 
+	 	  "| $$  | $$| $$  | $$| $$| $$      | $$$$$$/                \n" + 
+	 	  "| $$/$$ $$| $$  | $$| $$| $$      | $$_  $$                \n" + 
+	 	  "|  $$$$$$/|  $$$$$$/| $$|  $$$$$$$| $$ \  $$               \n" +
+	 	  " \____ $$$ \______/ |__/ \_______/|__/  \__/               \n" +
+	 	  "      \__/                                                 \n" +
+	      "                                                           \n" +
+	 	  "                                                           \n" +
+	 	  "  /$$$$$$   /$$                         /$$                \n" +
+	  	  " /$$__  $$ | $$                        | $$                \n" +
+	      "| $$  \__//$$$$$$    /$$$$$$   /$$$$$$$| $$   /$$  /$$$$$$$\n" +
+	  	  "|  $$$$$$|_  $$_/   /$$__  $$ /$$_____/| $$  /$$/ /$$_____/\n" +
+	  	  " \____  $$ | $$    | $$  \ $$| $$      | $$$$$$/ |  $$$$$$ \n" +
+		  " /$$  \ $$ | $$ /$$| $$  | $$| $$      | $$_  $$  \____  $$\n" +
+	  	  "|  $$$$$$/ |  $$$$/|  $$$$$$/|  $$$$$$$| $$ \  $$ /$$$$$$$/\n" +
+	  	  " \______/   \___/   \______/  \_______/|__/  \__/|_______/ \n" +
+		  "\n\nVersion: 1.0	Author: Hunter Barbella (AKA hman523)"
 
 
 
@@ -64,7 +70,8 @@ def apiCallToJson(call):
 
 #prints all metadata from a given json
 def printAllInfo(jsonOfCall):
-	if(jsonOfCall is not None):
+
+	if(jsonOfCall is not None and jsonOfCall['Timestamp'] is not None):
 		print("Firm- " + jsonOfCall['Name'])
 		print("Symbol- " + jsonOfCall['Symbol'])
 		print("Last Price- " + str(jsonOfCall['LastPrice']))
@@ -79,22 +86,33 @@ def printAllInfo(jsonOfCall):
 		print("Year To Date Change- " + str(jsonOfCall['ChangeYTD']))
 		print("Year To Date Percent Change- " + str(jsonOfCall['ChangePercentYTD']) + "%")
 	else:
-		print("Error finding stock")
-		
+		error = "unknown error occured"
 
+		if(jsonOfCall is None):
+			error = "stock doesn't exist"
+		else:
+			if(jsonOfCall['LastPrice'] is 0 and jsonOfCall['MarketCap'] is 0):
+				error = "server error"
+		
+		print("Error occured: " + error)
+		
+def getUserInput():
+	userInput = input()
+	if(userInput.lower() == 'quit'):
+		quit()
+	return userInput
 
 #Main loop in the program
 #Asks the user for a stock symbol and searches info based on that
 
+welcomePrint()
+
 
 while(True):
 	#Takes user input
+	
 	print("Enter a ticket symbol for a firm:")
-	userInput = input()
-	if(userInput.lower() == 'quit'):
-		quit()
 
-	#Oh boy I love this line.
 	#It gets the user inout, calls the api with it, converts it to a
 	#JSON then it prints the data.
-	printAllInfo(apiCallToJson(callApi(userInput)))
+	printAllInfo(apiCallToJson(callApi(getUserInput())))
