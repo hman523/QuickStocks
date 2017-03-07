@@ -42,15 +42,19 @@ print("  /$$$$$$            /$$           /$$                     \n" +
 #Informs user how to leave program
 print("To quit type quit or Control + \"c\"")
 
+#calls the api and returns a nice string of the json
 def callApi(stockSymbol):
 	stockSymbol.upper()
 	apiCall = requests.get(emptyUrl + stockSymbol)
 	apiCall = str(apiCall.content)
+	
+	#Clean up the junk by gettin rid of the unneeded data
 	indexOfStatus = apiCall.find('\"Status\"')
 	length = len(apiCall)
 	apiCall = apiCall[(indexOfStatus-1):length-2]
 	return apiCall
 
+#converts the string to a json file if it can, if not it returns none
 def apiCallToJson(call):
 	if(len(call) > 0):
 		jsonOfCall = json.loads(call)
@@ -90,4 +94,7 @@ while(True):
 	if(userInput.lower() == 'quit'):
 		quit()
 
+	#Oh boy I love this line.
+	#It gets the user inout, calls the api with it, converts it to a
+	#JSON then it prints the data.
 	printAllInfo(apiCallToJson(callApi(userInput)))
