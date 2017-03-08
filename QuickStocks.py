@@ -1,4 +1,4 @@
-#Quick Stocks v.1
+#Quick Stocks v.2
 #Author: Hunter Barbella (aka hman523)
 #Use: to have a command line interface for checking stocks
 #This code uses the GPL licence while the API uses the MIT licience
@@ -12,6 +12,8 @@ import requests
 import json
 import sys
 import argparse
+
+
 
 #This is the API URL that is used
 emptyUrl = "http://dev.markitondemand.com/MODApis/Api/v2/Quote/jsonp?symbol="
@@ -39,7 +41,7 @@ def welcomePrint():
 		  " /$$  \ $$ | $$ /$$| $$  | $$| $$      | $$_  $$  \____  $$\n" +
 	  	  "|  $$$$$$/ |  $$$$/|  $$$$$$/|  $$$$$$$| $$ \  $$ /$$$$$$$/\n" +
 	  	  " \______/   \___/   \______/  \_______/|__/  \__/|_______/ \n" +
-		  "\n\nVersion: 1.0	Author: Hunter Barbella (AKA hman523)"
+		  "\n\nVersion: 2.0	Author: Hunter Barbella (AKA hman523)\n\n"
 
 
 
@@ -93,16 +95,29 @@ def printAllInfo(jsonOfCall):
 			error = "stock doesn't exist"
 		else:
 			if(jsonOfCall['LastPrice'] is 0 and jsonOfCall['MarketCap'] is 0):
-				error = "server error"
+				error = ("server error with stock " + jsonOfCall['Symbol'])
 		
 		print("Error occured: " + error + "\n")
-		
+
+#gets the user input and returns it, also checks if user quits program
 def getUserInput():
 	print("Enter a ticket symbol for a firm:")
 	userInput = input()
 	if(userInput.lower() == 'quit'):
 		quit()
 	return userInput
+
+#using a filename, this opens and returns stock info
+def getStocksFromFile(stockFile):
+	with open(stockFile) as f:
+		listOfNames = f.readlines()
+	listOfNames = [i.strip() for i in listOfNames]
+	return listOfNames
+
+
+
+	
+	
 
 #Main loop in the program
 #Asks the user for a stock symbol and searches info based on that
@@ -119,10 +134,15 @@ parser = argparse.ArgumentParser(description=descriptionString)
 parser.add_argument('-sparams', nargs=1, dest='sparams', required=False,
 	help="Use the argument -q or -f")
 
-
+"""names = getStocksFromFile('stocks.txt')
+for n in names:
+	printAllInfo(apiCallToJson(callApi(n)))
+"""
 
 while(True):
 	
+
+
 	#It gets the user inout, calls the api with it, converts it to a
 	#JSON then it prints the data.
 	printAllInfo(apiCallToJson(callApi(getUserInput())))
