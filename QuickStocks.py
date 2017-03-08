@@ -85,6 +85,7 @@ def printAllInfo(jsonOfCall):
 		print("Open- " + str(jsonOfCall['Open']))
 		print("Year To Date Change- " + str(jsonOfCall['ChangeYTD']))
 		print("Year To Date Percent Change- " + str(jsonOfCall['ChangePercentYTD']) + "%")
+		print("")
 	else:
 		error = "unknown error occured"
 
@@ -94,9 +95,10 @@ def printAllInfo(jsonOfCall):
 			if(jsonOfCall['LastPrice'] is 0 and jsonOfCall['MarketCap'] is 0):
 				error = "server error"
 		
-		print("Error occured: " + error)
+		print("Error occured: " + error + "\n")
 		
 def getUserInput():
+	print("Enter a ticket symbol for a firm:")
 	userInput = input()
 	if(userInput.lower() == 'quit'):
 		quit()
@@ -107,12 +109,20 @@ def getUserInput():
 
 welcomePrint()
 
+descriptionString = """Arguments: -f -q
+f: file name
+q: quick lookup option
+"""
+
+parser = argparse.ArgumentParser(description=descriptionString)
+
+parser.add_argument('-sparams', nargs=1, dest='sparams', required=False,
+	help="Use the argument -q or -f")
+
+
 
 while(True):
-	#Takes user input
 	
-	print("Enter a ticket symbol for a firm:")
-
 	#It gets the user inout, calls the api with it, converts it to a
 	#JSON then it prints the data.
 	printAllInfo(apiCallToJson(callApi(getUserInput())))
