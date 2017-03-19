@@ -105,6 +105,7 @@ def getUserInput():
 	userInput = input()
 	if(userInput.lower() == 'quit'):
 		quit()
+	userInput = userInput.replace(" ", "")
 	return userInput
 
 #using a filename, this opens and returns stock info
@@ -121,28 +122,32 @@ def getStocksFromFile(stockFile):
 
 #Main loop in the program
 #Asks the user for a stock symbol and searches info based on that
+def main():
+	welcomePrint()
 
-welcomePrint()
+	descriptionString = """Arguments: -f -q
+	f: file name
+	q: quick lookup option
+	"""
 
-descriptionString = """Arguments: -f -q
-f: file name
-q: quick lookup option
-"""
+	parser = argparse.ArgumentParser(description=descriptionString)
 
-parser = argparse.ArgumentParser(description=descriptionString)
+	parser.add_argument('-sparams', nargs=1, dest='sparams', required=False,
+		help="Use the argument -q or -f")
 
-parser.add_argument('-sparams', nargs=1, dest='sparams', required=False,
-	help="Use the argument -q or -f")
-
-"""names = getStocksFromFile('stocks.txt')
-for n in names:
+	"""names = getStocksFromFile('stocks.txt')
+	for n in names:
 	printAllInfo(apiCallToJson(callApi(n)))
-"""
+	"""
 
-while(True):
+	while(True):
 	
 
 
-	#It gets the user inout, calls the api with it, converts it to a
-	#JSON then it prints the data.
-	printAllInfo(apiCallToJson(callApi(getUserInput())))
+		#It gets the user inout, calls the api with it,
+		# converts it to a JSON then it prints the data.
+		printAllInfo(apiCallToJson(callApi(getUserInput())))
+
+
+if __name__ == '__main__':
+	main()
