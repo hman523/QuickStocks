@@ -49,3 +49,4 @@ for stock in words:
 		print("Wrote " + stock + "to file")
 	else:
 		print("Error with stock name " + stock)
+f.close()

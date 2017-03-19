@@ -101,7 +101,7 @@ def printAllInfo(jsonOfCall):
 
 #gets the user input and returns it, also checks if user quits program
 def getUserInput():
-	print("Enter a ticket symbol for a firm:")
+	print("Enter a ticket symbol for a firm or load file:")
 	userInput = input()
 	if(userInput.lower() == 'quit'):
 		quit()
@@ -135,10 +135,7 @@ def main():
 	parser.add_argument('-sparams', nargs=1, dest='sparams', required=False,
 		help="Use the argument -q or -f")
 
-	"""names = getStocksFromFile('stocks.txt')
-	for n in names:
-	printAllInfo(apiCallToJson(callApi(n)))
-	"""
+
 
 	while(True):
 	
@@ -146,7 +143,15 @@ def main():
 
 		#It gets the user inout, calls the api with it,
 		# converts it to a JSON then it prints the data.
-		printAllInfo(apiCallToJson(callApi(getUserInput())))
+		userIn = getUserInput()
+		if (userIn.startswith('load')):
+			names = getStocksFromFile(userIn[4:])
+			print("Reading from " + userIn[4:])
+			for n in names:
+				print("Reading...")
+				printAllInfo(apiCallToJson(callApi(n)))
+		else:
+			printAllInfo(apiCallToJson(callApi(userIn)))
 
 
 if __name__ == '__main__':
